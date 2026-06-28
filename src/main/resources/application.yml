@@ -1,0 +1,44 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: stratek
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/stratek_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: hadoopInsano
+    password: Springlocao
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # nunca usar update em produção
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: false
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+jwt:
+  secret: minha-chave-super-secreta
+  expiration: 3600000 # 1 hora (em ms)
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
