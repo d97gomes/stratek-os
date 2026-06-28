@@ -29,7 +29,7 @@ public class OrderService {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    // ✅ Número da OS (legível)
+    // ✅ Número da OS
     private String number;
 
     // ✅ Status operacional
@@ -50,7 +50,7 @@ public class OrderService {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    // ✅ Totais (calculados no backend)
+    // ✅ Totais
     private BigDecimal totalProducts;
     private BigDecimal totalServices;
     private BigDecimal total;
@@ -59,18 +59,28 @@ public class OrderService {
     @Embedded
     private Payment payment;
 
-    // ✅ Equipamentos (dependente da OS)
+    // ✅ Equipamentos
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<Equipment> equipments;
 
-    // ✅ Serviços (itens)
+    // ✅ Serviços
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderServiceItem> serviceItems;
 
-    // ✅ Produtos (itens)
+    // ✅ Produtos
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProductItem> productItems;
 
+    // ✅ WARRANTY PRINCIPAL (gerada por essa OS)
+    @OneToOne(mappedBy = "orderService", cascade = CascadeType.ALL)
+    private Warranty warranty;
+
+    // ✅ WARRANTY DE ORIGEM (quando é retorno)
+    @ManyToOne
+    @JoinColumn(name = "warranty_origin_id")
+    private Warranty warrantyOrigin;
+
+    // ✅ Auditoria
     private LocalDateTime createdAt;
 
     @PrePersist
